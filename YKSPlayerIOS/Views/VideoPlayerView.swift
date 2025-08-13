@@ -200,43 +200,40 @@ struct SpeedSelectionView: View {
                 .padding(.horizontal, 8)
             
             // 速度选项
-            ScrollView {
-                LazyVStack(spacing: 0) {
-                    ForEach(speeds, id: \.self) { speed in
-                        Button(action: {
-                            selectedSpeed = speed
-                            dismiss()
-                        }) {
-                            HStack(spacing: 8) {
-                                Text("\(speed, specifier: "%.2f")x")
-                                    .font(.system(size: 15, weight: .medium))
-                                    .foregroundColor(.primary)
-                                
-                                Spacer()
-                                
-                                if speed == selectedSpeed {
-                                    Image(systemName: "checkmark.circle.fill")
-                                        .font(.system(size: 16))
-                                        .foregroundColor(.blue)
-                                }
+            VStack(spacing: 0) {
+                ForEach(speeds, id: \.self) { speed in
+                    Button(action: {
+                        selectedSpeed = speed
+                        dismiss()
+                    }) {
+                        HStack(spacing: 8) {
+                            Text("\(speed, specifier: "%.2f")x")
+                                .font(.system(size: 15, weight: .medium))
+                                .foregroundColor(.primary)
+                            
+                            Spacer()
+                            
+                            if speed == selectedSpeed {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .font(.system(size: 16))
+                                    .foregroundColor(.blue)
                             }
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 10)
-                            .background(
-                                speed == selectedSpeed ? 
-                                Color.blue.opacity(0.1) : Color.clear
-                            )
                         }
-                        .buttonStyle(PlainButtonStyle())
-                        
-                        if speed != speeds.last {
-                            Divider()
-                                .padding(.leading, 16)
-                        }
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 10)
+                        .background(
+                            speed == selectedSpeed ? 
+                            Color.blue.opacity(0.1) : Color.clear
+                        )
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    
+                    if speed != speeds.last {
+                        Divider()
+                            .padding(.leading, 16)
                     }
                 }
             }
-            .frame(maxHeight: 200)
         }
         .frame(width: 120)
         .background(
