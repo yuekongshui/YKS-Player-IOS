@@ -185,35 +185,69 @@ struct SpeedSelectionView: View {
     @Binding var selectedSpeed: Float
     @Environment(\.dismiss) private var dismiss
     
-    let speeds: [Float] = [0.5, 1.0, 1.25, 1.5, 2.0]
+    let speeds: [Float] = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0]
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
+            // 标题
             Text("播放速度")
-                .font(.headline)
-                .padding()
+                .font(.system(size: 14, weight: .medium))
+                .foregroundColor(.secondary)
+                .padding(.top, 12)
+                .padding(.bottom, 8)
             
-            ForEach(speeds, id: \.self) { speed in
-                Button(action: {
-                    selectedSpeed = speed
-                    dismiss()
-                }) {
-                    HStack {
-                        Text("\(speed, specifier: "%.1f")x")
-                        Spacer()
-                        if speed == selectedSpeed {
-                            Image(systemName: "checkmark")
-                                .foregroundColor(.blue)
+            Divider()
+                .padding(.horizontal, 8)
+            
+            // 速度选项
+            ScrollView {
+                LazyVStack(spacing: 0) {
+                    ForEach(speeds, id: \.self) { speed in
+                        Button(action: {
+                            selectedSpeed = speed
+                            dismiss()
+                        }) {
+                            HStack(spacing: 8) {
+                                Text("\(speed, specifier: "%.2f")x")
+                                    .font(.system(size: 15, weight: .medium))
+                                    .foregroundColor(.primary)
+                                
+                                Spacer()
+                                
+                                if speed == selectedSpeed {
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .font(.system(size: 16))
+                                        .foregroundColor(.blue)
+                                }
+                            }
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 10)
+                            .background(
+                                speed == selectedSpeed ? 
+                                Color.blue.opacity(0.1) : Color.clear
+                            )
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        
+                        if speed != speeds.last {
+                            Divider()
+                                .padding(.leading, 16)
                         }
                     }
-                    .padding(.horizontal)
-                    .padding(.vertical, 8)
                 }
-                .foregroundColor(.primary)
             }
+            .frame(maxHeight: 200)
         }
-        .padding()
-        .frame(width: 150)
+        .frame(width: 120)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(.systemBackground))
+                .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color(.systemGray4), lineWidth: 0.5)
+        )
     }
 }
 
